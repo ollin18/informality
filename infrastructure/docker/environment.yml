@@ -1,0 +1,10 @@
+name: tmdexpectations
+channels:
+  - anaconda
+  - conda-forge
+  - defaults
+dependencies:
+  - pandas
+  - snowflake-connector-python
+  - great-expectations
+  - sqlalchemy

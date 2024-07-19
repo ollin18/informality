@@ -1,0 +1,4 @@
+pandas
+geopandas
+polars
+hydra-core>=1.1.1

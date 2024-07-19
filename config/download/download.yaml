@@ -1,0 +1,74 @@
+hydra:
+  output_subdir: null
+  run:
+    dir: .
+
+countries:
+  - "MX"
+
+runvars:
+  sleep: 5
+  chunk_size: 1024
+  ISO: "ISO 88591"
+
+data:
+  raw: ../data/raw
+  download: "${data.raw}/dowload"
+  csv: "${data.raw}/csv"
+  shp: "${data.raw}/shp"
+
+urls:
+  file_state: "ageb_mza_urbana_${state}_cpv2020_csv.zip"
+  url_ageb: 'https://www.inegi.org.mx/contenidos/programas/ccpv/2020/datosabiertos/ageb_manzana'
+  url_request: "${urls.url_ageb}/${urls.file_state}"
+  url_shp: 'https://www.inegi.org.mx/contenidos/productos/prod_serv/contenidos/espanol/bvinegi/productos/geografia/marcogeo/889463807469'
+  url_shp_request: "${urls.url_shp}/${state_name}.zip"
+
+shp_types:
+  - m # Manzanas
+  - cd # Caserio disperso
+  - pem # Perimetro externo de manzanas
+
+states:
+  - "09" # CDMX
+  - "01" # BC
+  - "02" # BCS
+
+states_dict:
+  "01": "aguascalientes"
+  "02": "bajacalifornia"
+  "03": "bajacaliforniasur"
+  "04": "campeche"
+  "05": "coahuiladezaragoza"
+  "06": "colima"
+  "07": "chiapas"
+  "08": "chihuahua"
+  "09": "ciudaddemexico"
+  "10": "durango"
+  "11": "guanajuato"
+  "12": "guerrero"
+  "13": "hidalgo"
+  "14": "jalisco"
+  "15": "mexico"
+  "16": "michoacandeocampo"
+  "17": "morelos"
+  "18": "nayarit"
+  "19": "nuevoleon"
+  "20": "oaxaca"
+  "21": "puebla"
+  "22": "queretaro"
+  "23": "quintanaroo"
+  "24": "sanluispotosi"
+  "25": "sinaloa"
+  "26": "sonora"
+  "27": "tabasco"
+  "28": "tamaulipas"
+  "29": "tlaxcala"
+  "30": "veracruzignaciodelallave"
+  "31": "yucatan"
+  "32": "zacatecas"
+
+state: ${states[0]}
+country: ${countries[0]}
+state_name: "${state}_${states_dict.${state}}"
+shp_type: ${shp_types[0]}
