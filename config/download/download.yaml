@@ -23,6 +23,12 @@ urls:
   url_request: "${urls.url_ageb}/${urls.file_state}"
   url_shp: 'https://www.inegi.org.mx/contenidos/productos/prod_serv/contenidos/espanol/bvinegi/productos/geografia/marcogeo/889463807469'
   url_shp_request: "${urls.url_shp}/${state_name}.zip"
+  url_inegi_masivos: 'https://www.inegi.org.mx/contenidos/masiva'
+  file_denue: "denue_${state}_${denue_month}${denue_year}_csv.zip"
+  url_denue: "${urls.url_inegi_masivos}/denue/20${denue_year}_${denue_month}/${urls.file_denue}"
+  url_enoe_base: "https://www.inegi.org.mx/contenidos/programas/enoe/15ymas/datosabiertos"
+  file_enoe: "conjunto_de_datos_${enoe_type}_${enoe_year}_${enoe_period}t_csv.zip"
+  url_enoe: "${urls.url_enoe_base}/${enoe_year}/${urls.file_enoe}"
 
 shp_types:
   - m # Manzanas
@@ -72,3 +78,8 @@ state: ${states[0]}
 country: ${countries[0]}
 state_name: "${state}_${states_dict.${state}}"
 shp_type: ${shp_types[0]}
+denue_month: 11
+denue_year: 22
+enoe_year: 2024
+enoe_period: 1
+enoe_type: "enoe"
