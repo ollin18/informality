@@ -12,7 +12,7 @@ runvars:
   ISO: "ISO 88591"
 
 data:
-  raw: ../data/raw
+  raw: ../../data/raw
   download: "${data.raw}/dowload"
   csv: "${data.raw}/csv"
   shp: "${data.raw}/shp"

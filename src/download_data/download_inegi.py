@@ -9,7 +9,9 @@ from download_aux import download_file, extract_csvfile, extract_shpfile
 from omegaconf import DictConfig
 
 
-@hydra.main(config_path="../config/download", config_name="download", version_base=None)
+@hydra.main(
+    config_path="../../config/download", config_name="download", version_base=None
+)
 def main(config: DictConfig) -> None:
     # Data download
     download_file(config, config.urls.url_request, config.urls.file_state)
