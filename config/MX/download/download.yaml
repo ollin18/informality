@@ -12,7 +12,7 @@ runvars:
   ISO: "ISO 88591"
 
 data:
-  raw: ../../data/raw
+  raw: ../../../data/raw
   download: "${data.raw}/dowload"
   csv: "${data.raw}/csv"
   shp: "${data.raw}/shp"
@@ -24,6 +24,7 @@ urls:
   url_shp: 'https://www.inegi.org.mx/contenidos/productos/prod_serv/contenidos/espanol/bvinegi/productos/geografia/marcogeo/889463807469'
   url_shp_request: "${urls.url_shp}/${state_name}.zip"
   url_inegi_masivos: 'https://www.inegi.org.mx/contenidos/masiva'
+  # Denue: https://www.inegi.org.mx/app/descarga/default.html. This only works for CDMX.
   file_denue: "denue_${state}_${denue_month}${denue_year}_csv.zip"
   url_denue: "${urls.url_inegi_masivos}/denue/20${denue_year}_${denue_month}/${urls.file_denue}"
   url_enoe_base: "https://www.inegi.org.mx/contenidos/programas/enoe/15ymas/datosabiertos"
@@ -39,6 +40,7 @@ states:
   - "09" # CDMX
   - "01" # BC
   - "02" # BCS
+  - "15" # EDOMEX
 
 states_dict:
   "01": "aguascalientes"
