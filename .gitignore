@@ -98,7 +98,10 @@ outputs
 *.cpg
 *.dbf
 *.prj
-/data/raw/shp
+/data/MX/raw/shp
+/data/BR/raw/shp
+/data/LA/raw/shp
+/data/BAY/raw/shp
 
 # dvc
 .dvc
