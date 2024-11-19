@@ -75,7 +75,7 @@ def combine_csvfile(config: DictConfig, file_key: str, state: str) -> None:
     )
 
     # Define the output file path
-    combined_file = os.path.join(csv_dir, f"denue_{state}_.csv")
+    combined_file = os.path.join(csv_dir, f"denue_inegi_{state}_.csv")
 
     try:
         # Read the individual part files
