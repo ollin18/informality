@@ -2,6 +2,8 @@ hydra:
   output_subdir: null
   run:
     dir: .
+  sweep:
+    dir: multirun
 
 countries:
   - "MX"
@@ -12,7 +14,8 @@ runvars:
   ISO: "ISO 88591"
 
 data:
-  raw: ../../../data/raw
+  base: ../../../data
+  raw: "${data.base}/${country}/raw"
   download: "${data.raw}/dowload"
   csv: "${data.raw}/csv"
   shp: "${data.raw}/shp"
@@ -26,7 +29,11 @@ urls:
   url_inegi_masivos: 'https://www.inegi.org.mx/contenidos/masiva'
   # Denue: https://www.inegi.org.mx/app/descarga/default.html. This only works for CDMX.
   file_denue: "denue_${state}_${denue_month}${denue_year}_csv.zip"
+  file_denue_part1: "denue_${state}_1_${denue_month}${denue_year}_csv.zip"
+  file_denue_part2: "denue_${state}_2_${denue_month}${denue_year}_csv.zip"
   url_denue: "${urls.url_inegi_masivos}/denue/20${denue_year}_${denue_month}/${urls.file_denue}"
+  url_denue_part1: "${urls.url_inegi_masivos}/denue/20${denue_year}_${denue_month}/${urls.file_denue_part1}"
+  url_denue_part2: "${urls.url_inegi_masivos}/denue/20${denue_year}_${denue_month}/${urls.file_denue_part2}"
   url_enoe_base: "https://www.inegi.org.mx/contenidos/programas/enoe/15ymas/datosabiertos"
   file_enoe: "conjunto_de_datos_${enoe_type}_${enoe_year}_${enoe_period}t_csv.zip"
   url_enoe: "${urls.url_enoe_base}/${enoe_year}/${urls.file_enoe}"
@@ -38,8 +45,6 @@ shp_types:
 
 states:
   - "09" # CDMX
-  - "01" # BC
-  - "02" # BCS
   - "15" # EDOMEX
 
 states_dict:
@@ -76,7 +81,7 @@ states_dict:
   "31": "yucatan"
   "32": "zacatecas"
 
-state: ${states[0]}
+state: ${states} # ${states[0]}
 country: ${countries[0]}
 state_name: "${state}_${states_dict.${state}}"
 shp_type: ${shp_types[0]}

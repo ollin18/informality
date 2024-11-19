@@ -13,6 +13,7 @@ from omegaconf import DictConfig
     config_path="../../../config/MX/download", config_name="download", version_base=None
 )
 def main(config: DictConfig) -> None:
+    config.state = str(config.state)
     # Data download
     download_file(config, config.urls.url_request, config.urls.file_state)
     # shapefile download

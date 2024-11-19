@@ -6,22 +6,24 @@ import os
 import time
 from zipfile import ZipFile
 
+import pandas as pd
 import requests
 from omegaconf import DictConfig
 from tqdm import tqdm
 
 
 def download_file(config: DictConfig, url: str, file_name: str) -> None:
-    os.makedirs(os.path.join(config.data.download, config.country), exist_ok=True)
+    os.makedirs(os.path.join(config.data.download), exist_ok=True)
 
     time.sleep(config.runvars.sleep)
     chunk_size = config.runvars.chunk_size
 
+    print(f"Downloading {url}")
     r = requests.get(url, stream=True)
     total_size = int(r.headers["content-length"])
 
-    file_path = os.path.join(config.data.download, config.country, file_name)
-    print(f"Downloading {file_path}...")
+    file_path = os.path.join(config.data.download, file_name)
+    print(f"Downloading to {file_path}...")
     with open(file_path, "wb") as f:
         for data in tqdm(
             iterable=r.iter_content(chunk_size=chunk_size),
@@ -34,12 +36,10 @@ def download_file(config: DictConfig, url: str, file_name: str) -> None:
 def extract_csvfile(
     config: DictConfig, file_key: str, sub_dir: str, file_pattern: str
 ) -> None:
-    csv_dir = os.path.join(config.data.csv, config.country)
+    csv_dir = os.path.join(config.data.csv)
     os.makedirs(csv_dir, exist_ok=True)
 
-    zip_file = os.path.join(
-        config.data.download, config.country, getattr(config.urls, file_key)
-    )
+    zip_file = os.path.join(config.data.download, getattr(config.urls, file_key))
     csv_file = os.path.join(
         sub_dir, "conjunto_de_datos", file_pattern.format(config.state)
     )
@@ -60,11 +60,49 @@ def extract_csvfile(
         print(f"An error occurred: {e}")
 
 
-def extract_shpfile(config: DictConfig) -> None:
-    file_path = os.path.join(
-        config.data.download, config.country, f"{config.state_name}.zip"
+def combine_csvfile(config: DictConfig, file_key: str, state: str) -> None:
+    # Define the directory where the CSV files are located
+    csv_dir = os.path.join(config.data.csv)
+
+    # Define the file patterns for the parts
+    part1_file = os.path.join(
+        csv_dir,
+        f"denue_inegi_{state}_1.csv",
     )
-    output_dir = os.path.join(config.data.shp, config.country)
+    part2_file = os.path.join(
+        csv_dir,
+        f"denue_inegi_{state}_2.csv",
+    )
+
+    # Define the output file path
+    combined_file = os.path.join(csv_dir, f"denue_{state}_.csv")
+
+    try:
+        # Read the individual part files
+        print(f"Reading part files for state {state}...")
+        part1 = pd.read_csv(part1_file, encoding="latin1")
+        part2 = pd.read_csv(part2_file, encoding="latin1")
+
+        # Combine the parts
+        combined = pd.concat([part1, part2], ignore_index=True)
+
+        # Save the combined file
+        combined.to_csv(combined_file, index=False)
+        print(f"Combined CSV file saved to: {combined_file}")
+        os.remove(part1_file)
+        os.remove(part2_file)
+
+    except FileNotFoundError as e:
+        print(f"File not found: {e}")
+    except pd.errors.EmptyDataError as e:
+        print(f"One of the CSV files is empty: {e}")
+    except Exception as e:
+        print(f"An error occurred while combining the files: {e}")
+
+
+def extract_shpfile(config: DictConfig) -> None:
+    file_path = os.path.join(config.data.download, f"{config.state_name}.zip")
+    output_dir = os.path.join(config.data.shp)
     os.makedirs(output_dir, exist_ok=True)
 
     # Define the shapefile components
