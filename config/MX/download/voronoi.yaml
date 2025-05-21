@@ -1,0 +1,44 @@
+hydra:
+  output_subdir: null
+  run:
+    dir: .
+
+countries:
+  - "MX"
+
+runvars:
+  sleep: 5
+  chunk_size: 1024
+  ISO: "ISO 88591"
+
+data:
+  base: ../../../data
+  raw: "${data.base}/${country}/raw"
+  download: "${data.raw}/dowload"
+  csv: "${data.raw}/csv"
+  shp: "${data.raw}/shp"
+  bigdata: "/data/Berkeley/${country}"
+  mobility: "${data.bigdata}/data_quadrant/stops_r1${r1}_ms${ms}_mt${mt}"
+  maps: "${data.bigdata}/maps"
+
+shp_types:
+  - m # Manzanas
+  - cd # Caserio disperso
+  - pem # Perimetro externo de manzanas
+
+states:
+  - "09" # CDMX
+  - "15" # EDOMEX
+
+state: ${states} # ${states[0]}
+country: ${countries[0]}
+state_name: "${state}_${states_dict.${state}}"
+shp_type: ${shp_types[0]}
+denue_month: 11
+denue_year: 22
+enoe_year: 2024
+enoe_period: 1
+enoe_type: "enoe"
+r1: 20
+ms: 300
+mt: 3600

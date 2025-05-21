@@ -29,6 +29,7 @@ numpy = [
     {version = "*", python=">=3.13"},
     {version = "^1.26.0", python=">=3.9,<3.13"},
 ]
+ecomplexity = "^0.5.3"
 
 [tool.poetry.dev-dependencies]
 pdoc3 = "^0.10.0"

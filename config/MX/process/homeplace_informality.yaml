@@ -7,66 +7,26 @@ countries:
   - "MX"
 
 data:
-  raw: ../../data/raw
+  base: ../../../data
+  clean: "${data.base}/${country}/clean"
+  raw: "${data.base}/${country}/raw"
   download: "${data.raw}/dowload"
   csv: "${data.raw}/csv"
   shp: "${data.raw}/shp"
-
-urls:
-  file_state: "conjunto_de_datos_ageb_urbana_${state}_cpv2020.csv"
-
-shp_types:
-  - m # Manzanas
-  - cd # Caserio disperso
-  - pem # Perimetro externo de manzanas
-
-states:
-  - "09" # CDMX
-  - "01" # BC
-  - "02" # BCS
-
-states_dict:
-  "01": "aguascalientes"
-  "02": "bajacalifornia"
-  "03": "bajacaliforniasur"
-  "04": "campeche"
-  "05": "coahuiladezaragoza"
-  "06": "colima"
-  "07": "chiapas"
-  "08": "chihuahua"
-  "09": "ciudaddemexico"
-  "10": "durango"
-  "11": "guanajuato"
-  "12": "guerrero"
-  "13": "hidalgo"
-  "14": "jalisco"
-  "15": "mexico"
-  "16": "michoacandeocampo"
-  "17": "morelos"
-  "18": "nayarit"
-  "19": "nuevoleon"
-  "20": "oaxaca"
-  "21": "puebla"
-  "22": "queretaro"
-  "23": "quintanaroo"
-  "24": "sanluispotosi"
-  "25": "sinaloa"
-  "26": "sonora"
-  "27": "tabasco"
-  "28": "tamaulipas"
-  "29": "tlaxcala"
-  "30": "veracruzignaciodelallave"
-  "31": "yucatan"
-  "32": "zacatecas"
+  bigdata: "/data/Berkeley/${country}"
+  mobility: "${data.bigdata}/data_quadrant/stops_r1${r1}_ms${ms}_mt${mt}"
+  maps: "${data.bigdata}/maps"
+  staging: "${data.base}/${country}/staging"
 
 read_census:
   # columns: ["ENTIDAD", "MUN", "LOC", "AGEB", "MZA"]
   columns:
-    - "ENTIDAD"
-    - "MUN"
-    - "LOC"
+    - 'ENTIDAD'
+    - 'MUN'
+    - 'LOC'
+    - 'NOM_LOC'
     - "AGEB"
-    - "MZA"
+    - 'MZA'
     - 'POBTOT'
     - 'PEA'
     - 'POCUPADA'
@@ -83,32 +43,53 @@ read_census:
     ENTIDAD: str
     MUN: str
     LOC: str
+    NOM_LOC: str
     AGEB: str
     MZA: str
-    # POBTOT: int
-    # PEA: int
-    # POCUPADA: int
-    # PSINDER: int
-    # PDESOCUP: int
-    # P_12YMAS: int
-    # PDER_SS: int
-    # TVIVPARHAB: int
-    # PROM_OCUP: float
-    # PAFIL_IPRIV: int
-    # PDER_IMSS: int
-    # PDER_ISTE: int
+    POBTOT: int
+    PEA: int
+    POCUPADA: int
+    PSINDER: int
+    PDESOCUP: int
+    P_12YMAS: int
+    PDER_SS: int
+    TVIVPARHAB: int
+    PROM_OCUP: float
+    PAFIL_IPRIV: int
+    PDER_IMSS: int
+    PDER_ISTE: int
+
+naics_to_desc:
+    '11': "Agriculture"              # Agriculture Forestry Fishing and Hunting
+    '21': "Energy"                  # Mining Quarrying and Oil and Gas Extraction
+    '22': "Energy"                  # Utilities (Energy)
+    '23': "Construction"             # Construction
+    '31': "Manufacturing"              # Manufacturing
+    '32': "Manufacturing"              # Manufacturing
+    '33': "Manufacturing"              # Manufacturing
+    '43': "Wholesale"                  # Wholesale Trade
+    '46': "Retail"               # Retail Trade
+    '48': "Transportation"               # Transportation and Warehousing
+    '49': "Transportation"               # Transportation and Warehousing
+    '51': "Information"              # Information
+    '52': "Financial"               # Finance and Insurance
+    '53': "Real Estate"            # Real Estate and Rental and Leasing
+    '5417': "Science"                 # Professional Scientific and Technical Services
+    '54': 'Professional Service'
+    '55': "Corporate"              # Management of Companies and Enterprises
+    '56': "Business Support"          # Administrative and Support Services
+    '61': "Education"                # Educational Services
+    '62': "Health"                    # Health Care and Social Assistance
+    '71': "Art/Culture"             # Arts Entertainment and Recreation
+    '72': "Hospitality"             # Accommodation and Food Services (Hospitality)
+    '81': "Other"                    # Other Services (except Public Administration)
+    '93': "Public Administration"                 # Public Administration
+
 
 state: ${states[0]}
 country: ${countries[0]}
 state_name: "${state}_${states_dict.${state}}"
 shp_type: ${shp_types[0]}
-
-# dem = (df[['CVEGEO',
-#  'POBTOT','PEA','POCUPADA','PSINDER','PDESOCUP','P_12YMAS','PDER_SS','TVIVPARHAB','PROM_OCUP','PAFIL_IPRIV','PDER_IMSS','PDER_ISTE'
-#  )
-#
-# columns_to_convert = ['POBTOT', 'PEA', 'POCUPADA', 'PSINDER', 'PDESOCUP', 'P_12YMAS', 'PDER_SS','TVIVPARHAB','PROM_OCUP','PAFIL_IPRIV','PDER_IMSS','PDER_ISTE']
-#
-# # Convert columns to numeric, removing commas and converting to integer
-# for column in columns_to_convert:
-#     dem[column] = pd.to_numeric(dem[column], errors='coerce'
+r1: 20
+ms: 300
+mt: 3600
